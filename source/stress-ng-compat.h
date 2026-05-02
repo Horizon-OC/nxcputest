@@ -32,8 +32,8 @@
 #define HAVE_DRAND48
 
 #define OPT_FLAGS_VERIFY (1ULL << 0)
-static uint64_t g_opt_flags = 0;
-static uint64_t g_opt_timeout = 1;
+static uint64_t g_opt_flags __attribute__((unused)) = 0;
+static uint64_t g_opt_timeout __attribute__((unused)) = 1;
 
 #define pr_fail(fmt, ...) printf(fmt, ##__VA_ARGS__)
 #define pr_inf(fmt, ...) printf(fmt, ##__VA_ARGS__)
@@ -133,8 +133,14 @@ static inline void shim_nanosleep_uint64(uint64_t ns) {
   svcSleepThread((s64)ns);
 }
 
-static uint32_t mwc_w = 0xdeadbeef;
-static uint32_t mwc_z = 0x12345678;
+// Each code gets its own RNG state
+static __thread uint32_t mwc_w = 0xdeadbeef;
+static __thread uint32_t mwc_z = 0x12345678;
+
+static inline void stress_mwc_seed(uint32_t w, uint32_t z) {
+  mwc_w = w ? w : 0xdeadbeef;
+  mwc_z = z ? z : 0x12345678;
+}
 
 static inline void stress_mwc_seed_default(void) {
   mwc_w = 0xdeadbeef;

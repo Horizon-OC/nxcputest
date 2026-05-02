@@ -43,7 +43,9 @@ SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	include
 #ROMFS	:=	romfs
-
+APP_TITLE := nxcputest
+APP_AUTHOR := Souldbminer and ColinIanKing
+APP_VERSION := 1.0.0
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
